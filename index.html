@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="main.css" type="text/css">
+  <script src="js/three.min.js"></script>
+  <script src="js/OrbitControls.js"></script>
+</head>
+
+<body>
+  <script>
+    let scene, camera, renderer, cube, controls
+
+    const createCube = () => {
+      const geometry = new THREE.BoxGeometry(10000, 10000, 10000)
+      const textures = [
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('assets/penguins (33)/sun_ft.jpg'), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('assets/penguins (33)/sun_bk.jpg'), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('assets/penguins (33)/sun_up.jpg'), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('assets/penguins (33)/sun_dn.jpg'), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('assets/penguins (33)/sun_rt.jpg'), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('assets/penguins (33)/sun_lf.jpg'), side: THREE.DoubleSide })
+      ]
+
+      const material = new THREE.MeshFaceMaterial(textures)
+      // const textures = new THREE.MeshBasicMaterial({ color: 0x444444 })
+      cube = new THREE.Mesh(geometry, textures)
+      scene.add(cube)
+    }
+
+    const init = () => {
+      scene = new THREE.Scene()
+
+      camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        10000
+      )
+
+      // camera.position.z = 5
+      camera.position.set(0, 0, 5)
+      createCube()
+
+      renderer = new THREE.WebGLRenderer({ antialias: true })
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      document.body.appendChild(renderer.domElement)
+      controls = new THREE.OrbitControls(camera, renderer.domElement)
+    }
+
+    const animate = () => {
+      window.requestAnimationFrame(animate)
+      renderer.render(scene, camera)
+    }
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      camera.aspect(window.innerWidth / window.innerHeight)
+      camera.updateProjectionMatrix()
+    })
+
+
+
+    init()
+    animate()
+
+  </script>
+</body>
+
+</html>
